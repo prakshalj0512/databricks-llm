@@ -1,8 +1,10 @@
 import git
 import requests
+import os
+from pr_generator import generate_github_pr
 
 # Set up OpenAI API credentials
-openai_api_key = ""
+openai_api_key = os.environ.get("OPENAI_API_KEY")
 
 # Initialize the Git repository
 repo = git.Repo()
@@ -29,6 +31,7 @@ def generate_git_commit():
 
     # Print the generated commit message
     print(f"Generated commit message: {commit_msg}")
+    return commit_msg
 
 
 def generate_code_report():
@@ -57,6 +60,7 @@ def generate_pr():
 
     # Print the generated commit message
     print(f"Code Review: {pull_request}")
+    return pull_request
 
 
 def whisper():
@@ -64,17 +68,18 @@ def whisper():
     user_approval = input("Do still want to commit this code with the identified issues?")
 
     if user_approval.lower() == "y" or user_approval.lower() == "yes":
-        generate_git_commit()
+        commit_msg = generate_git_commit()
         user_approval = input("Does the commit message look good? (y/n): ")
 
         if user_approval.lower() == "y" or user_approval.lower() == "yes":
-            # repo.index.commit(commit_msg)
+            repo.index.commit(commit_msg)
             print("Changes committed successfully.")
 
-            generate_pr()
+            pr_message = generate_pr()
             user_approval = input("Do still want to commit this code with the identified issues?")
 
             if user_approval.lower() == "y" or user_approval.lower() == "yes":
+                generate_github_pr(commit_msg, pr_message)
                 print("PR submitted and team notified.")
         else:
             print("Changes not committed.")
