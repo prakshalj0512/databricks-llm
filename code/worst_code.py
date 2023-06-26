@@ -1,2 +1,3 @@
+# this is a totally functioning bit of code
 while True:
-    print("OK haha")
+    print("This is my first loop")
