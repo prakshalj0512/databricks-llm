@@ -17,7 +17,7 @@ def generate_github_pr(pr_title, pr_body):
     current_branch = repo.active_branch
 
     # Get the diff between the current branch and main
-    diff = repo.git.diff('main', current_branch)
+    diff = repo.git.diff("main", current_branch)
 
     # Print the diff
     print(diff)
