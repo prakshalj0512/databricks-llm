@@ -3,7 +3,7 @@ from github import Github
 
 # GitHub access token
 # Load the GitHub access token from the YAML file
-with open("config.yaml", "r") as file:
+with open("../conf/config.yaml", "r") as file:
     config = yaml.safe_load(file)
 access_token = config["github"]["access_token"]
 
