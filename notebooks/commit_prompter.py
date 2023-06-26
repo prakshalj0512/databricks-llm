@@ -13,19 +13,18 @@ repo = git.Repo()
 diff = repo.git.diff("HEAD")
 
 # Make a request to the OpenAI API to generate a commit message
-headers = {
-    "Authorization": f"Bearer {openai_api_key}",
-    "Content-Type": "application/json"
-}
+headers = {"Authorization": f"Bearer {openai_api_key}", "Content-Type": "application/json"}
 
 
 def generate_git_commit():
     data = {
         "prompt": f"The following is a list of files in diff format.  Do your best to undersand the code changes for all changed files and write a simple one line git commit message that describes the behavior that changed.\n{diff}",
         "max_tokens": 2000,
-        "temperature": 0.8
+        "temperature": 0.8,
     }
-    response = requests.post("https://api.openai.com/v1/engines/text-davinci-003/completions", json=data, headers=headers)
+    response = requests.post(
+        "https://api.openai.com/v1/engines/text-davinci-003/completions", json=data, headers=headers
+    )
     response.raise_for_status()
     commit_msg = response.json()["choices"][0]["text"]
 
@@ -38,9 +37,11 @@ def generate_code_report():
     data = {
         "prompt": f"You are a Python developer.  The following code is in diff format.  Examine the code, identify all logic errors, poor programming style, or security issues.  Produce a report that details the issues and provides possible resolutions.  Include resolution code samples if applicable.\n{diff}",
         "max_tokens": 2000,
-        "temperature": 0.8
+        "temperature": 0.8,
     }
-    response = requests.post("https://api.openai.com/v1/engines/text-davinci-003/completions", json=data, headers=headers)
+    response = requests.post(
+        "https://api.openai.com/v1/engines/text-davinci-003/completions", json=data, headers=headers
+    )
     response.raise_for_status()
     code_analysis = response.json()["choices"][0]["text"]
 
@@ -50,11 +51,13 @@ def generate_code_report():
 
 def generate_pr():
     data = {
-    "prompt": f"You are a Python developer and tech writer.  Use both of these skills to wite an engaging and descriptive Pull Request to explain every detail of your changes so that a human can review text and completely understand what the code is doing. You can use bullet points to help with readability, but make sure you make the PR super interesting and funny.\n{diff}",
-    "max_tokens": 2000,
-    "temperature": 0.8
+        "prompt": f"You are a Python developer and tech writer.  Use both of these skills to wite an engaging and descriptive Pull Request to explain every detail of your changes so that a human can review text and completely understand what the code is doing. You can use bullet points to help with readability, but make sure you make the PR super interesting and funny. Always include emojis. \n{diff}",
+        "max_tokens": 2000,
+        "temperature": 0.8,
     }
-    response = requests.post("https://api.openai.com/v1/engines/text-davinci-003/completions", json=data, headers=headers)
+    response = requests.post(
+        "https://api.openai.com/v1/engines/text-davinci-003/completions", json=data, headers=headers
+    )
     response.raise_for_status()
     pull_request = response.json()["choices"][0]["text"]
 
