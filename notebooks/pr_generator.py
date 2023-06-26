@@ -33,6 +33,9 @@ def generate_github_pr(pr_title, pr_body):
     base_branch = "main"
     head_branch = current_branch.name
 
+    # Push code to origin
+    repo.remote("origin").push(f"refs/heads/{head_branch}")
+
     # Create the pull request
     pull_request = repository.create_pull(title=pr_title, body=pr_body, base=base_branch, head=head_branch)
 
