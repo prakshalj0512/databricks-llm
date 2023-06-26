@@ -1,2 +1,2 @@
 while True:
-    print("OK")
+    print("OK haha")
