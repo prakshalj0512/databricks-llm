@@ -65,7 +65,7 @@ def generate_pr():
 
 def whisper():
     generate_code_report()
-    user_approval = input("Do still want to commit this code with the identified issues?")
+    user_approval = input("Do still want to commit this code with the identified issues? ")
 
     if user_approval.lower() == "y" or user_approval.lower() == "yes":
         commit_msg = generate_git_commit()
@@ -76,7 +76,7 @@ def whisper():
             print("Changes committed successfully.")
 
             pr_message = generate_pr()
-            user_approval = input("Do still want to commit this code with the identified issues?")
+            user_approval = input("Do you want to create a PR with this message? ")
 
             if user_approval.lower() == "y" or user_approval.lower() == "yes":
                 generate_github_pr(commit_msg, pr_message)
